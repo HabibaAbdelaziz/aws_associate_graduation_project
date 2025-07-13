@@ -2,6 +2,9 @@
 
 A serverless data processing pipeline built with AWS to process car brand/model CSV files. It includes validation, cleaning, and querying capabilities with email alerts and analytics-ready architecture.
 
+<img width="2256" height="1889" alt="Blank diagram(1)" src="https://github.com/user-attachments/assets/8819d4b1-96b7-4588-ae43-7dfd20fd4957" />
+
+
 ---
 
 ## ✅ Features
@@ -38,8 +41,12 @@ A serverless data processing pipeline built with AWS to process car brand/model 
 │   └── get_cars_by_brand/
 │       └── lambda_function.py
 ├── step_function_definition.json
+├── step_function_execution.json
 ├── architecture-diagram.png
 ├── README.md
+├── LICENSE
+├── live_endpoint_Invoke_URL.txt
+├── solution_architecture_diagram.png
 └── .gitignore
 ```
 
@@ -49,7 +56,7 @@ A serverless data processing pipeline built with AWS to process car brand/model 
 
 ### 1. Upload CSV
 
-A user uploads a tab-delimited CSV file to an S3 bucket (`car-inventory-uploads-habiba`). This triggers the Step Function.
+A user uploads a comma-delimited CSV file to an S3 bucket (`car-inventory-uploads-habiba`). This triggers the Step Function.
 
 ### 2. Parse CSV → Validate → Save to DB
 
@@ -153,5 +160,5 @@ Rejected: 5
 
 ## 🧾 Credits
 
-Developed by [Habiba Abdelaziz](mailto\:habibahosameldin@hotmail.com) for AWS Graduation Project – 2025
+Developed by [Habiba Abdelaziz] for AWS Solution Architect Associate Manara Graduation Project – 2025
 
