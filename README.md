@@ -2,8 +2,16 @@
 
 A serverless data processing pipeline built with AWS to process car brand/model CSV files. It includes validation, cleaning, and querying capabilities with email alerts and analytics-ready architecture.
 
+### Demo Video
+
+
+https://github.com/user-attachments/assets/9581f108-64fd-4e1c-b332-e5c47deb350b
+
+
+
 ### 📌 Architecture Diagram
 <img width="2276" height="2409" alt="solution_architecture_diagram" src="https://github.com/user-attachments/assets/82d4cb6f-0bdc-473c-9919-1e22aa1d25fa" />
+
 
 
 
