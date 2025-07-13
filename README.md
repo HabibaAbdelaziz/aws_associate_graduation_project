@@ -2,10 +2,25 @@
 
 A serverless data processing pipeline built with AWS to process car brand/model CSV files. It includes validation, cleaning, and querying capabilities with email alerts and analytics-ready architecture.
 
-<img width="2256" height="1889" alt="Blank diagram(1)" src="https://github.com/user-attachments/assets/8819d4b1-96b7-4588-ae43-7dfd20fd4957" />
+### 📌 Architecture Diagram
+<img width="2276" height="2409" alt="solution_architecture_diagram" src="https://github.com/user-attachments/assets/82d4cb6f-0bdc-473c-9919-1e22aa1d25fa" />
+
 
 
 ---
+### 📐 Architecture Overview
+
+1. A user uploads a CSV file (e.g., `cars_new.csv`) to the `car-inventory-uploads-habiba` S3 bucket.
+2. This triggers the `trigger_step_function` Lambda function.
+3. The Lambda function starts the AWS Step Function with the uploaded file's S3 location.
+4. The Step Function coordinates a pipeline of Lambda functions:
+   - `parse_csv_from_s3`: Parses the CSV into rows.
+   - `filter_valid_brands`: Filters rows by brand starting with 'A' and validates.
+   - `save_filtered_to_dynamodb`: Saves accepted cars to DynamoDB.
+   - `generate_report` (optional): Generates summary of processed records.
+   - `notify_processing_status` (optional): Sends notification (e.g., via SNS or SES).
+
+
 
 ## ✅ Features
 
@@ -19,7 +34,7 @@ A serverless data processing pipeline built with AWS to process car brand/model 
 
 ---
 
-## 📌 Architecture Diagram
+
 
 
 
@@ -30,6 +45,8 @@ A serverless data processing pipeline built with AWS to process car brand/model 
 ```
 .
 ├── lambdas/
+│   ├── trigger_step_funtion/
+│   │   └── lambda_function.py
 │   ├── parse_csv_from_s3/
 │   │   └── lambda_function.py
 │   ├── filter_valid_brands/
@@ -56,20 +73,28 @@ A serverless data processing pipeline built with AWS to process car brand/model 
 
 ### 1. Upload CSV
 
-A user uploads a comma-delimited CSV file to an S3 bucket (`car-inventory-uploads-habiba`). This triggers the Step Function.
+A user uploads a comma-delimited CSV file to an S3 bucket (`car-inventory-uploads-habiba`). 
 
-### 2. Parse CSV → Validate → Save to DB
+###  2. Lambda: `trigger_step_function`
+
+- **Trigger**: S3 upload to `car-inventory-uploads-habiba`
+- **Purpose**: Extracts S3 bucket/key and starts the Step Function with that input.
+- **Environment Variable**:
+  - `STEP_FUNCTION_ARN`: ARN of the state machine to execute.
+
+
+### 3. Parse CSV → Validate → Save to DB
 
 - **parse\_csv\_from\_s3** reads and splits rows.
 - **filter\_valid\_brands** strips, formats, and filters valid brands.
 - **save\_filtered\_to\_dynamodb** stores clean data in DynamoDB (`FilteredCars`).
 
-### 3. Reporting
+### 4. Reporting
 
 - A summary report is uploaded to a second S3 bucket (`car-processing-reports-habiba`).
 - SNS sends an email notification with counts.
 
-### 4. Querying
+### 5. Querying
 
 - API Gateway `/cars?brand=Acura` invokes **get\_cars\_by\_brand** Lambda to fetch cars from DynamoDB.
 
