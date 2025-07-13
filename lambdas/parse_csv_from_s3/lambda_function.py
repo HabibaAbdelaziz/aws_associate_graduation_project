@@ -21,5 +21,7 @@ def lambda_handler(event, context):
     rows = [row for row in csv_reader]
 
     return {
-        "rows": rows
+        "rows": rows,
+        "bucket": bucket,
+        "key": key
     }
